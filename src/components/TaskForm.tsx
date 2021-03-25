@@ -11,7 +11,6 @@ const TaskForm: React.FC<AddTaskFormProps> = ({ addTask }) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTask(e.target.value);
-    console.log(task);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
