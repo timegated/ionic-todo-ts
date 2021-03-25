@@ -20,7 +20,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete }) => {
     <TaskUL>
       {tasks.map((task: any) => {
         return (
-          <TaskItem
+          <TaskListItem
             key={task.id}
             task={task}
             toggleComplete={toggleComplete}
@@ -38,10 +38,6 @@ const TaskUL = styled.ul`
   margin: 0 auto;
   padding: 0;
 `
-const TaskItem = styled(TaskListItem)`
-  display: flex;
-  justify-content: space-between;
-  background: gray;
-`
+
 
 export default TaskList
