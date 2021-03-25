@@ -10,18 +10,19 @@ const TaskForm: React.FC<AddTaskFormProps> = ({ addTask }) => {
   const [task, setTask] = useState<string>('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // checks that letters and numbers are only entered into the field -- includes dashes and commas
     setTask(e.target.value);
     console.log(task);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // checks that letters and numbers are only entered into the field -- includes dashes and commas
     const inputCheck = new RegExp(/^[a-zA-Z0-9\s.\-_']+$/)
     inputCheck.test(task) ? addTask(task) : alert('Input Invalid');
-
+    setTask('');
   };
-  console.log('This is indeed a function', typeof addTask);
+
   return (
     <>
       <FormContainer>

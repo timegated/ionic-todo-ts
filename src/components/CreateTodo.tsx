@@ -12,16 +12,15 @@ type AddTask = (newTask: string) => void;
 const CreateTask: React.FC = () => {
   const [tasks, setTasks] = useState<Array<Tasks>>([])
 
-  // const { localStorage } = window;
-
-  // console.log(localStorage);
+  const { localStorage } = window;
 
   const addTask: AddTask = (newTask: any) => {
     setTasks([...tasks, { id: Math.floor(Math.random() * 1000), text: newTask, complete: false }])
-    // localStorage.setItem('tasks', tasks.toString() )
+    localStorage.setItem( 'tasks', JSON.stringify(tasks) )
   }
 
   console.log(tasks);
+  console.log(localStorage);
 
   return (
     <>
