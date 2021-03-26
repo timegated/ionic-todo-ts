@@ -5,7 +5,7 @@ import TaskList from "../components/TaskList";
 import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
-type DeleteTask = (selectedTask: string) => void;
+type DeleteTask = (id: number) => void;
 type EditTask = (id: number) => void;
 type ShowModal = () => void;
 
@@ -59,22 +59,20 @@ const Home: React.FC = () => {
       }
       return task;
     });
-    setTasks(updatedTask);
     console.log('The task Id',id)
   };
 
-  const deleteTask: DeleteTask = (selectedTask: any) => {
-    const updatedTasks = tasks.filter(task => task.text !== selectedTask);
+  const deleteTask: DeleteTask = (id:number) => {
+    const updatedTasks = tasks.filter(task => task.id !== id);
     setTasks(updatedTasks);
     localStorage.setItem('tasks', JSON.stringify(updatedTasks))
   };
  
   return (
     <IonPage>
-      <IonHeader>
-        <HeaderTitle>Let's Add Some Tasks</HeaderTitle>
+      <Header>
         <TaskForm addTask={ addTask }/>
-      </IonHeader>
+      </Header>
       <IonContent>
         <IonModal isOpen={showModal}>
           <h1 style={{ textAlign: 'center', marginTop: '2.5rem' }}>Edit Task</h1>
@@ -88,13 +86,10 @@ const Home: React.FC = () => {
     </IonPage>
   );
 };
-
-const HeaderTitle = styled.h1`
-  text-align: center;
-  margin: 0;
+const Header = styled.header`
   background-color: #2E1465;
-  color: #FFFFFF;
-`;
+`
+
 
 const MyButton = styled.button`
   background:linear-gradient(90deg,#0ba9a7,#44c983);

@@ -25,6 +25,7 @@ const TaskForm: React.FC<AddTaskFormProps> = ({ addTask }) => {
   return (
     <>
       <FormContainer>
+        <HeaderTitle>My To Do List</HeaderTitle>
         <Form onSubmit={handleSubmit}>
           <InputContainer>
             <Input type="text" value={task} onChange={handleChange} />
@@ -36,21 +37,32 @@ const TaskForm: React.FC<AddTaskFormProps> = ({ addTask }) => {
   )
 };
 
+
+
 const FormContainer = styled.div`
   background-color: #2E1465;
+  margin: 2.5rem 0 0 0;
+  padding: 1.5rem;
+`;
+
+const HeaderTitle = styled.h1`
+  text-align: center;
   margin: 0;
-`
+  color: #FFFFFF;
+  font-weight: 600;
+`;
+
 const Form = styled.form`
   margin: 0;
-`
+`;
 const InputContainer = styled.div`
-  max-width: 1200px;
+  max-width: 85%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 5rem;
-`
+  padding-bottom: 2.5rem;
+`;
 const Input = styled.input`
 font-size: 32px;
 border-radius:  10px 0 0 10px;
@@ -60,7 +72,7 @@ margin: 0;
     font-size: 18px;
 
   }
-`
+`;
 
 const SubmitButton = styled.button`
   background: #4AB866;
@@ -75,5 +87,5 @@ const SubmitButton = styled.button`
     font-size: 18px;
 
   }
-`
+`;
 export default TaskForm

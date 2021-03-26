@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
 type EditTask = (id: number) => void;
-type DeleteTask = (selectedTask: string) => void;
+type DeleteTask = (id: number) => void;
 type HandleShowModal = () => void;
 
 type Tasks = {
