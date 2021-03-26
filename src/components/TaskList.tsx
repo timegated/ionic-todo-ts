@@ -3,6 +3,8 @@ import TaskListItem from './TaskListItem';
 import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
+type EditTask = (selectedTask: string) => void;
+type DeleteTask = (selectedTask: string) => void;
 
 type Tasks = {
   id: number,
@@ -12,10 +14,12 @@ type Tasks = {
 
 interface TaskListProps {
   tasks: Array<Tasks>,
-  toggleComplete: ToggleComplete
+  toggleComplete: ToggleComplete,
+  editTask: EditTask,
+  deleteTask: DeleteTask
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete }) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete, editTask, deleteTask }) => {
   return (
     <TaskUL>
       {tasks.map((task: any) => {
@@ -24,6 +28,8 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete }) => {
             key={task.id}
             task={task}
             toggleComplete={toggleComplete}
+            editTask={editTask}
+            deleteTask={deleteTask}
           />
         )
       })}

@@ -38,10 +38,11 @@ const TaskForm: React.FC<AddTaskFormProps> = ({ addTask }) => {
 
 const FormContainer = styled.div`
   background-color: #2E1465;
-
+  margin: 0;
 `
 const Form = styled.form`
-  `
+  margin: 0;
+`
 const InputContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -54,6 +55,7 @@ const Input = styled.input`
 font-size: 32px;
 border-radius:  10px 0 0 10px;
 padding: 0.15em;
+margin: 0;
 @media (max-width: 375px) {
     font-size: 18px;
 
