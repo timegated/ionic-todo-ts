@@ -3,8 +3,9 @@ import TaskListItem from './TaskListItem';
 import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
-type EditTask = (selectedTask: string) => void;
+type EditTask = (id: number) => void;
 type DeleteTask = (selectedTask: string) => void;
+type HandleShowModal = () => void;
 
 type Tasks = {
   id: number,
@@ -16,10 +17,11 @@ interface TaskListProps {
   tasks: Array<Tasks>,
   toggleComplete: ToggleComplete,
   editTask: EditTask,
-  deleteTask: DeleteTask
+  deleteTask: DeleteTask,
+  handleShowModal: HandleShowModal
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete, editTask, deleteTask }) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete, editTask, deleteTask, handleShowModal }) => {
   return (
     <TaskUL>
       {tasks.map((task: any) => {
@@ -30,6 +32,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete, editTask, de
             toggleComplete={toggleComplete}
             editTask={editTask}
             deleteTask={deleteTask}
+            handleShowModal={handleShowModal}
           />
         )
       })}

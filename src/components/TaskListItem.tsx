@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { TrashOutline, PencilOutline } from 'react-ionicons';
 
 type ToggleComplete = (selectedTask: string) => void;
-type EditTask = (selectedTask: string) => void;
+type EditTask = (id: number) => void;
 type DeleteTask = (selectedTask: string) => void;
+type ShowModal = () => void;
 
 type Tasks = {
   id: number,
@@ -16,9 +17,10 @@ interface TaskListItemProps {
   task: Tasks,
   toggleComplete: ToggleComplete,
   editTask: EditTask,
-  deleteTask: DeleteTask
+  deleteTask: DeleteTask,
+  handleShowModal: ShowModal
 }
-const TaskListItem: React.FC<TaskListItemProps> = ({task, toggleComplete, editTask, deleteTask}) => {
+const TaskListItem: React.FC<TaskListItemProps> = ({task, toggleComplete, editTask, deleteTask, handleShowModal}) => {
   return (
     <ListItemContainer>
       <ListItem>
@@ -29,19 +31,41 @@ const TaskListItem: React.FC<TaskListItemProps> = ({task, toggleComplete, editTa
       />
       </ListItem>
       <div>
-        <PencilOutline style={{cursor: 'pointer', marginRight: '0.50rem'}} onClick={() => editTask(task.text)}/>
-        <TrashOutline style={{ cursor: 'pointer', marginRight: '0.50rem' }} onClick={() => deleteTask(task.text) }/>
+        <MyPencil onClick={() => handleShowModal()}/>
+        <MyTrashCan style={{ cursor: 'pointer', marginRight: '0.50rem' }} onClick={() => deleteTask(task.text) }/>
       </div>
     </ListItemContainer>
   )
 }
+
+const MyPencil = styled(PencilOutline)`
+  cursor: pointer;
+  margin-right: 0.50rem;
+
+  & svg {
+    width: 30px;
+    height: 30px; 
+  }
+`;
+
+const MyTrashCan = styled(TrashOutline)`
+  cursor: pointer;
+  
+  & svg {
+    width: 30px;
+    height: 30px; 
+  }
+`;
+
 const ListItemContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
   border-radius: 5px;
-  box-shadow: 2px 2px .25em black;
+  &:nth-child(odd) {
+    background: lightgrey;
+  }
 `;
 
 const CheckBox = styled.input`
@@ -54,7 +78,7 @@ const ListItem = styled.li`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   font-size: 24px;
 `;
 const ItemLabel = styled.label`
