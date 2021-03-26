@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TrashOutline, PencilOutline } from 'react-ionicons';
 
 type ToggleComplete = (selectedTask: string) => void;
-type EditTask = (id: number, text: string) => void;
+type EditTask = (id: number) => void;
 type DeleteTask = (selectedTask: string) => void;
 type ShowModal = () => void;
 
@@ -24,7 +24,7 @@ const TaskListItem: React.FC<TaskListItemProps> = ({ task, toggleComplete, editT
   
   const multipleEvents = () => {
     handleShowModal();
-    editTask(task.id, task.text);
+    editTask(task.id);
   }
   return (
     <ListItemContainer>

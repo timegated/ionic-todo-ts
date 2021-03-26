@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
 type DeleteTask = (selectedTask: string) => void;
-type EditTask = (id: number, text:string) => void;
+type EditTask = (id: number) => void;
 type ShowModal = () => void;
 
 type Tasks = {
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
   };
 
   const editTask: EditTask = (id:number) => {
-    const updatedTask = taskerinos.map((task: any) => {
+    const updatedTask = tasks.map((task: any) => {
       if (id === task.id) {
         return {...task, text: editText}
       }
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
     setTasks(updatedTasks);
     localStorage.setItem('tasks', JSON.stringify(updatedTasks))
   };
-  console.log(editText)
+ 
   return (
     <IonPage>
       <IonHeader>
@@ -80,7 +80,7 @@ const Home: React.FC = () => {
           <h1 style={{ textAlign: 'center', marginTop: '2.5rem' }}>Edit Task</h1>
           <EditForm onSubmit={handleSubmit}>
           <IonTextarea autofocus={true} placeholder="edit your item" value={editText} onIonChange={(e) => setEditText(e.detail.value!)}></IonTextarea>
-          <MyButton onClick={() => editTask}>Save</MyButton>
+          <MyButton>Save</MyButton>
           </EditForm>
         </IonModal>
         <TaskList tasks={tasks} toggleComplete={toggleComplete} editTask={editTask} handleShowModal={handleShowModal} deleteTask={deleteTask} />
