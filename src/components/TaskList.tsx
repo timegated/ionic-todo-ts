@@ -1,9 +1,8 @@
-import React, { FormEvent } from 'react'
+import React from 'react'
 import TaskListItem from './TaskListItem';
 import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
-type EditTask = (id: number) => void;
 type DeleteTask = (id: number) => void;
 type HandleShowModal = () => void;
 
@@ -16,21 +15,20 @@ type Tasks = {
 interface TaskListProps {
   tasks: Array<Tasks>,
   toggleComplete: ToggleComplete,
-  editTask: EditTask,
   deleteTask: DeleteTask,
   handleShowModal: HandleShowModal
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete, editTask, deleteTask, handleShowModal }) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks, toggleComplete, deleteTask, handleShowModal }) => {
   return (
     <TaskUL>
       {tasks.map((task: any) => {
         return (
           <TaskListItem
             key={task.id}
+            id={task.id}
             task={task}
             toggleComplete={toggleComplete}
-            editTask={editTask}
             deleteTask={deleteTask}
             handleShowModal={handleShowModal}
           />

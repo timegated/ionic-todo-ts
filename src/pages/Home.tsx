@@ -2,12 +2,14 @@ import { IonHeader, IonPage, IonContent, IonModal, IonButton, IonTextarea} from 
 import { useState, FormEvent } from "react";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
+import EditForm from '../components/EditForm';
 import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
 type DeleteTask = (id: number) => void;
-type EditTask = (id: number) => void;
 type ShowModal = () => void;
+type AddTask = (newTask: string) => void;
+type EditTask = (...args: any) => void;
 
 type Tasks = {
   id: number,
@@ -15,17 +17,12 @@ type Tasks = {
   complete: boolean
 };
 
-type AddTask = (newTask: string) => void;
-
-
-
 const Home: React.FC = () => {
   const { localStorage } = window;
   const taskerinos = JSON.parse(localStorage.getItem("tasks") || "[]");
 
   const [tasks, setTasks] = useState<Array<Tasks>>(taskerinos);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [editText, setEditText] = useState<string>('');
 
   const toggleComplete: ToggleComplete = (selectedTask) => {
     const updatedTasks = tasks.map(task => {
@@ -35,16 +32,7 @@ const Home: React.FC = () => {
       return task;
     })
     setTasks(updatedTasks);
-    console.log('The selected task', selectedTask);
   };
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  }
-  const handleShowModal: ShowModal = () => {
-    showModal ? setShowModal(false) : setShowModal(true);
-    console.log(showModal)
-    console.log("handleShowModal")
-  }
 
   const addTask: AddTask = (newTask: any) => {
     setTasks([...tasks, { id: Math.floor(Math.random() * 1000), text: newTask, complete: false }])
@@ -52,14 +40,13 @@ const Home: React.FC = () => {
     localStorage.setItem('tasks', JSON.stringify(taskerinos));
   };
 
-  const editTask: EditTask = (id:number) => {
+  const editTask: EditTask = (id: any, editText:string) => {
     const updatedTask = tasks.map((task: any) => {
       if (id === task.id) {
         return {...task, text: editText}
       }
       return task;
     });
-    console.log('The task Id',id)
   };
 
   const deleteTask: DeleteTask = (id:number) => {
@@ -67,7 +54,11 @@ const Home: React.FC = () => {
     setTasks(updatedTasks);
     localStorage.setItem('tasks', JSON.stringify(updatedTasks))
   };
- 
+
+  const handleShowModal: ShowModal = () => {
+    showModal ? setShowModal(false) : setShowModal(true);
+  };
+
   return (
     <IonPage>
       <Header>
@@ -75,13 +66,9 @@ const Home: React.FC = () => {
       </Header>
       <IonContent>
         <IonModal isOpen={showModal}>
-          <h1 style={{ textAlign: 'center', marginTop: '2.5rem' }}>Edit Task</h1>
-          <EditForm onSubmit={handleSubmit}>
-          <IonTextarea autofocus={true} placeholder="edit your item" value={editText} onIonChange={(e) => setEditText(e.detail.value!)}></IonTextarea>
-          <MyButton>Save</MyButton>
-          </EditForm>
+          <EditForm id={1} editTask={editTask} handleShowModal={handleShowModal}/>
         </IonModal>
-        <TaskList tasks={tasks} toggleComplete={toggleComplete} editTask={editTask} handleShowModal={handleShowModal} deleteTask={deleteTask} />
+        <TaskList tasks={tasks} toggleComplete={toggleComplete} handleShowModal={handleShowModal} deleteTask={deleteTask} />
       </IonContent>
     </IonPage>
   );
@@ -89,22 +76,13 @@ const Home: React.FC = () => {
 const Header = styled.header`
   background-color: #2E1465;
 `
-
-
-const MyButton = styled.button`
-  background:linear-gradient(90deg,#0ba9a7,#44c983);
-  padding: 0.75rem;
-  width: 25%;
-  border-radius: 10px;
-  color: #000000;
-  font-weight: 600;
-  margin: 0.75rem auto;
-`
-
-const EditForm = styled.form`
-  margin: 0;
+const CustomModal = styled(IonModal)`
   height: 450px;
-  display: flex;
-  flex-direction: column;
+  width: 450px;
+  position: absolute;
+  top: 50%;
+  left: 40%;
 `
+
+
 export default Home;

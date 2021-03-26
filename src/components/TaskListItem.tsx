@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { TrashOutline, PencilOutline } from 'react-ionicons';
 
 type ToggleComplete = (selectedTask: string) => void;
-type EditTask = (id: number) => void;
 type DeleteTask = (id: number) => void;
 type ShowModal = () => void;
 
@@ -15,18 +14,17 @@ type Tasks = {
 
 interface TaskListItemProps {
   task: Tasks,
+  id: any,
   toggleComplete: ToggleComplete,
-  editTask: EditTask,
   deleteTask: DeleteTask,
   handleShowModal: ShowModal
 }
-const TaskListItem: React.FC<TaskListItemProps> = ({ task, toggleComplete, editTask, deleteTask, handleShowModal }) => {
-  
+const TaskListItem: React.FC<TaskListItemProps> = ({ id, task, toggleComplete, deleteTask, handleShowModal }) => {
   const multipleEvents = () => {
     handleShowModal();
-    editTask(task.id);
+    console.log(id);
+    return id;
   };
-
   return (
     <ListItemContainer>
       <ListItem>
