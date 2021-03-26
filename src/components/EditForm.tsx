@@ -15,6 +15,7 @@ const EditForm: React.FC<EditFormProps> = ({ id, editTask, handleShowModal }) =>
   const [editText, setEditText] = useState<string>('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     editTask(id, editText);
   }
 
@@ -24,7 +25,7 @@ const EditForm: React.FC<EditFormProps> = ({ id, editTask, handleShowModal }) =>
           <Form onSubmit={handleSubmit}>
         <TextArea autofocus={true} placeholder="edit your item" value={editText} onIonChange={(e) => setEditText(e.detail.value!)}></TextArea>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <MyButton>Save</MyButton>
+          <MyButton onClick={() => handleShowModal()}>Save</MyButton>
           <Cancel onClick={() => handleShowModal()}>Cancel</Cancel>
         </div>
           
