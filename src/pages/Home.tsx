@@ -2,14 +2,12 @@ import { IonHeader, IonPage, IonContent, IonModal, IonButton, IonTextarea} from 
 import { useState, FormEvent } from "react";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
-import EditForm from '../components/EditForm';
 import styled from 'styled-components';
 
-type ToggleComplete = (selectedTask: string) => void;
+type ToggleComplete = (id: number) => void;
 type DeleteTask = (id: number) => void;
-type ShowModal = () => void;
 type AddTask = (newTask: string) => void;
-type EditTask = (...args: any) => void;
+type EditTask = (id: number, editText: string) => void;
 
 type Tasks = {
   id: number,
@@ -22,11 +20,10 @@ const Home: React.FC = () => {
   const taskerinos = JSON.parse(localStorage.getItem("tasks") || "[]");
 
   const [tasks, setTasks] = useState<Array<Tasks>>(taskerinos);
-  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const toggleComplete: ToggleComplete = (selectedTask) => {
+  const toggleComplete: ToggleComplete = (id: number) => {
     const updatedTasks = tasks.map(task => {
-      if (task.text === selectedTask) {
+      if (task.id === id) {
         return {...task, complete: !task.complete}
       }
       return task;
@@ -40,13 +37,15 @@ const Home: React.FC = () => {
     localStorage.setItem('tasks', JSON.stringify(taskerinos));
   };
 
-  const editTask: EditTask = (id: any, editText:string) => {
+  const editTask: EditTask = (id: number, editText:string) => {
     const updatedTask = tasks.map((task: any) => {
       if (id === task.id) {
         return {...task, text: editText}
       }
       return task;
     });
+    setTasks(updatedTask);
+    localStorage.setItem('tasks', JSON.stringify(updatedTask));
   };
 
   const deleteTask: DeleteTask = (id:number) => {
@@ -55,9 +54,6 @@ const Home: React.FC = () => {
     localStorage.setItem('tasks', JSON.stringify(updatedTasks))
   };
 
-  const handleShowModal: ShowModal = () => {
-    showModal ? setShowModal(false) : setShowModal(true);
-  };
 
   return (
     <IonPage>
@@ -65,10 +61,8 @@ const Home: React.FC = () => {
         <TaskForm addTask={ addTask }/>
       </Header>
       <IonContent>
-        <IonModal isOpen={showModal}>
-          <EditForm id={1} editTask={editTask} handleShowModal={handleShowModal}/>
-        </IonModal>
-        <TaskList tasks={tasks} toggleComplete={toggleComplete} handleShowModal={handleShowModal} deleteTask={deleteTask} />
+        
+        <TaskList tasks={tasks} editTask={ editTask } toggleComplete={toggleComplete} deleteTask={ deleteTask } />
       </IonContent>
     </IonPage>
   );

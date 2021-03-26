@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { IonHeader, IonPage, IonContent, IonModal, IonButton, IonTextarea} from "@ionic/react";
+
 import styled from 'styled-components';
 import { TrashOutline, PencilOutline } from 'react-ionicons';
+import EditForm from './EditForm';
 
-type ToggleComplete = (selectedTask: string) => void;
+type ToggleComplete = (id: number) => void;
 type DeleteTask = (id: number) => void;
 type ShowModal = () => void;
+type EditTask = (id: number, editText: string) => void;
 
 type Tasks = {
   id: number,
@@ -17,27 +21,32 @@ interface TaskListItemProps {
   id: any,
   toggleComplete: ToggleComplete,
   deleteTask: DeleteTask,
-  handleShowModal: ShowModal
+  editTask: EditTask
 }
-const TaskListItem: React.FC<TaskListItemProps> = ({ id, task, toggleComplete, deleteTask, handleShowModal }) => {
-  const multipleEvents = () => {
-    handleShowModal();
-    console.log(id);
-    return id;
+const TaskListItem: React.FC<TaskListItemProps> = ({ id, task, editTask, toggleComplete, deleteTask }) => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const handleShowModal: ShowModal = () => {
+    showModal ? setShowModal(false) : setShowModal(true);
   };
+
   return (
     <ListItemContainer>
       <ListItem>
       {task.complete ? <ItemLabelLt>{ task.text }</ItemLabelLt> : <ItemLabel>{ task.text }</ItemLabel>}
       <CheckBox type="checkbox"
         checked={task.complete}
-        onChange={() => toggleComplete(task.text)}
+        onChange={() => toggleComplete(id)}
       />
       </ListItem>
       <div>
-        <MyPencil onClick={() => multipleEvents()}/>
+        <MyPencil onClick={() => handleShowModal()}/>
         <MyTrashCan style={{ cursor: 'pointer', marginRight: '0.50rem' }} onClick={() => deleteTask(task.id) }/>
       </div>
+      <IonModal isOpen={showModal}>
+      <EditForm id={id} editTask={ editTask } handleShowModal={ handleShowModal }/>
+      </IonModal>
+
     </ListItemContainer>
   )
 }

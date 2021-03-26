@@ -7,7 +7,7 @@ interface AddTaskFormProps {
   addTask: AddTask
 }
 const TaskForm: React.FC<AddTaskFormProps> = ({ addTask }) => {
-  const [task, setTask] = useState<string>('');
+  const [newTask, setTask] = useState<string>('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTask(e.target.value);
@@ -18,7 +18,7 @@ const TaskForm: React.FC<AddTaskFormProps> = ({ addTask }) => {
 
     // checks that letters and numbers are only entered into the field -- includes dashes and commas
     const inputCheck = new RegExp(/^[a-zA-Z0-9\s.\-_']+$/)
-    inputCheck.test(task) ? addTask(task) : alert('Input Invalid');
+    inputCheck.test(newTask) ? addTask(newTask) : alert('Input Invalid');
     setTask('');
   };
 
@@ -28,7 +28,7 @@ const TaskForm: React.FC<AddTaskFormProps> = ({ addTask }) => {
         <HeaderTitle>My To Do List</HeaderTitle>
         <Form onSubmit={handleSubmit}>
           <InputContainer>
-            <Input type="text" value={task} onChange={handleChange} />
+            <Input type="text" value={newTask} onChange={handleChange} />
             <SubmitButton>Add To List</SubmitButton>
           </InputContainer>
         </Form>

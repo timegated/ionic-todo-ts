@@ -6,18 +6,16 @@ type EditTask = (...args: any) => void;
 type ShowModal = () => void;
 
 interface EditFormProps {
-  id: any
+  id: any,
   editTask: EditTask,
   handleShowModal: ShowModal
 }
 
 const EditForm: React.FC<EditFormProps> = ({ id, editTask, handleShowModal }) => {
-  const [editText, setEditText] = useState<string>('the default text');
+  const [editText, setEditText] = useState<string>('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     editTask(id, editText);
-    console.log(id)
   }
 
   return (
