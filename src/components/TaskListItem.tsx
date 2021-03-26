@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {FormEvent} from 'react';
 import styled from 'styled-components';
 import { TrashOutline, PencilOutline } from 'react-ionicons';
 
 type ToggleComplete = (selectedTask: string) => void;
-type EditTask = (id: number) => void;
+type EditTask = (id: number, text: string) => void;
 type DeleteTask = (selectedTask: string) => void;
 type ShowModal = () => void;
 
@@ -20,7 +20,12 @@ interface TaskListItemProps {
   deleteTask: DeleteTask,
   handleShowModal: ShowModal
 }
-const TaskListItem: React.FC<TaskListItemProps> = ({task, toggleComplete, editTask, deleteTask, handleShowModal}) => {
+const TaskListItem: React.FC<TaskListItemProps> = ({ task, toggleComplete, editTask, deleteTask, handleShowModal }) => {
+  
+  const multipleEvents = () => {
+    handleShowModal();
+    editTask(task.id, task.text);
+  }
   return (
     <ListItemContainer>
       <ListItem>
@@ -31,7 +36,7 @@ const TaskListItem: React.FC<TaskListItemProps> = ({task, toggleComplete, editTa
       />
       </ListItem>
       <div>
-        <MyPencil onClick={() => handleShowModal()}/>
+        <MyPencil onClick={() => multipleEvents()}/>
         <MyTrashCan style={{ cursor: 'pointer', marginRight: '0.50rem' }} onClick={() => deleteTask(task.text) }/>
       </div>
     </ListItemContainer>

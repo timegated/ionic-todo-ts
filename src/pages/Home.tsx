@@ -1,12 +1,12 @@
 import { IonHeader, IonPage, IonContent, IonModal, IonButton, IonTextarea} from "@ionic/react";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
 import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
-type EditTask = (id: number) => void;
 type DeleteTask = (selectedTask: string) => void;
+type EditTask = (id: number, text:string) => void;
 type ShowModal = () => void;
 
 type Tasks = {
@@ -37,7 +37,9 @@ const Home: React.FC = () => {
     setTasks(updatedTasks);
     console.log('The selected task', selectedTask);
   };
-
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  }
   const handleShowModal: ShowModal = () => {
     showModal ? setShowModal(false) : setShowModal(true);
     console.log(showModal)
@@ -51,7 +53,14 @@ const Home: React.FC = () => {
   };
 
   const editTask: EditTask = (id:number) => {
-    console.log(id);
+    const updatedTask = taskerinos.map((task: any) => {
+      if (id === task.id) {
+        return {...task, text: editText}
+      }
+      return task;
+    });
+    setTasks(updatedTask);
+    console.log('The task Id',id)
   };
 
   const deleteTask: DeleteTask = (selectedTask: any) => {
@@ -59,7 +68,7 @@ const Home: React.FC = () => {
     setTasks(updatedTasks);
     localStorage.setItem('tasks', JSON.stringify(updatedTasks))
   };
-  console.log(showModal);
+  console.log(editText)
   return (
     <IonPage>
       <IonHeader>
@@ -69,9 +78,9 @@ const Home: React.FC = () => {
       <IonContent>
         <IonModal isOpen={showModal}>
           <h1 style={{ textAlign: 'center', marginTop: '2.5rem' }}>Edit Task</h1>
-          <EditForm>
+          <EditForm onSubmit={handleSubmit}>
           <IonTextarea autofocus={true} placeholder="edit your item" value={editText} onIonChange={(e) => setEditText(e.detail.value!)}></IonTextarea>
-          <MyButton>Submit</MyButton>
+          <MyButton onClick={() => editTask}>Save</MyButton>
           </EditForm>
         </IonModal>
         <TaskList tasks={tasks} toggleComplete={toggleComplete} editTask={editTask} handleShowModal={handleShowModal} deleteTask={deleteTask} />
@@ -87,10 +96,12 @@ const HeaderTitle = styled.h1`
   color: #FFFFFF;
 `;
 
-const MyButton = styled(IonButton)`
-  background-color: #0ba9a7;
+const MyButton = styled.button`
+  background:linear-gradient(90deg,#0ba9a7,#44c983);
+  padding: 0.75rem;
   width: 25%;
-  color: #FFFFFF;
+  border-radius: 10px;
+  color: #000000;
   font-weight: 600;
   margin: 0.75rem auto;
 `

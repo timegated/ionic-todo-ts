@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { FormEvent } from 'react'
 import TaskListItem from './TaskListItem';
 import styled from 'styled-components';
 
 type ToggleComplete = (selectedTask: string) => void;
-type EditTask = (id: number) => void;
+type EditTask = (id: number, text: string) => void;
 type DeleteTask = (selectedTask: string) => void;
 type HandleShowModal = () => void;
 
